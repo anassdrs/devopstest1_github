@@ -1,0 +1,21 @@
+---
+- name: Setup and deploy application
+  hosts: all
+  tasks:
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Build Docker image
+      community.docker.docker_image:
+        path: .
+        name: my_app_image
+
+    - name: Run Docker container
+      community.docker.docker_container:
+        name: my_app_container
+        image: my_app_image
+        state: started
+        ports:
+          - "80:80"
